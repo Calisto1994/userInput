@@ -6,6 +6,7 @@ all: linux windows		# Default target to build for Linux and Windows
 clean:
 	@echo "Cleaning up..."
 	@rm -rf ./*.so # remove the shared library since it was installed to /usr/lib64/userInput/
+	@rm -rf ./*.dll # remove the Windows shared library
 
 install:	# Install the binary to /usr/lib/userInput/
 	@echo "Installing library..."
@@ -24,3 +25,8 @@ linux: *.c
 	@echo "Building for Linux x86_64..."
 	@gcc --shared -fpic -o ./libuserInput.so *.c
 	@strip --strip-unneeded ./libuserInput.so
+
+windows: *.c
+	@echo "Building for Windows x86_64..."
+	@x86_64-w64-mingw32-gcc -shared -fpic -o ./libuserInput.dll *.c
+	@strip --strip-unneeded ./libuserInput.dll
