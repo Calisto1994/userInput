@@ -1,13 +1,7 @@
 #ifndef USERINPUT_H
 #define USERINPUT_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <errno.h>
-#include <stdbool.h>
-#include <ctype.h>
+#include "includes.h"
 
 int userInput (char **buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe
 int userInput_c (char *buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe (Einzelzeichen)
