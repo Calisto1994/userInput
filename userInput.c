@@ -87,7 +87,7 @@ int userInput_ml (char **buffer, char* prompt) {
     size_t len = 0;
 
     printf("%s", prompt);
-    while ((thisChar = getchar()) != EOF) { // Nur nach EOF abfragen für mehrere Zeilen ("\n" wird nicht berücksichtigt)
+    while ((thisChar = getchar()) != EOF) { // Only EOF is checked, so multiple lines can be entered, "\n" is ignored
         if (len + 2 > size) {
             size *= 2;
             char* tmp = realloc(*buffer, size);
