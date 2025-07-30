@@ -42,7 +42,7 @@ int userInput_c (char *buffer, char* prompt); // Memory-safe implementation of u
 int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of user input (multiple lines)
 int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles
-bool userInput_yesno (char *buffer, char* prompt); // Memory-safe implementation of user input for yes/no questions
+bool userInput_yesno (char* prompt); // Memory-safe implementation of user input for yes/no questions
 
 // ****** Character input functions ******
 
@@ -158,7 +158,7 @@ int userInput_double (double *buffer, char* prompt) {
     return 0; // Successful input
 }
 
-bool userInput_yesno (char *buffer, char* prompt) {
+bool userInput_yesno (char* prompt) {
     char zeichen;
 
     while (true) {
