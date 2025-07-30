@@ -30,6 +30,7 @@
 
 #define APP_LANGUAGE_ENGLISH 0
 #define APP_LANGUAGE_GERMAN 1
+#define APP_LANGUAGE APP_LANGUAGE_ENGLISH // Define the language of the application, here German
 
 // ****** Function declarations ******
 
@@ -167,10 +168,12 @@ bool userInput_yesno (char* prompt) {
             fprintf(stderr, "Input terminated by EOF before an answer could be processed.\n");
             return false; // Treat EOF as no answer
         }
-        #ifdef APP_LANGUAGE && APP_LANGUAGE == APP_LANGUAGE_GERMAN
-            if (tolower(zeichen) == 'j') {
-        #else
-            if (tolower(zeichen) == 'y') {
+        #ifdef APP_LANGUAGE
+            #if APP_LANGUAGE == APP_LANGUAGE_GERMAN
+                if (tolower(zeichen) == 'j') {
+            #else
+                if (tolower(zeichen) == 'y') {
+            #endif
         #endif
             printf("\n"); // New line for better readability
             return true; // Yes
@@ -179,11 +182,11 @@ bool userInput_yesno (char* prompt) {
             return false; // No
         } else {
             #ifdef APP_LANGUAGE
-            if (APP_LANGUAGE == APP_LANGUAGE_GERMAN) {
-                printf("Ungültige Eingabe! Bitte nur mit j/n antworten.\n");
-            } else {
-                printf("Invalid input! Only answer y/n please.\n");
-            }
+                #if APP_LANGUAGE == APP_LANGUAGE_GERMAN
+                    printf("Ungültige Eingabe! Bitte nur mit j/n antworten.\n");
+                #else
+                    printf("Invalid input! Only answer y/n please.\n");
+                #endif
             #else
                 printf("Invalid input! Only answer y/n please.\n");
             #endif
