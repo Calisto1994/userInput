@@ -117,3 +117,6 @@ Even though macOS isn't exactly Linux, use `make linux` if you've got gcc instal
 You may have to change to .dylib (or even modify some aspects of the compiler commands) to make it work, depending on the versions of gcc and macOS you're using.
 Since I don't currently own a Mac myself (and certainly don't own different kinds of Mac computers, e.g. PowerPC, Intel and Apple Silicon), macOS compatibility
 is assured only through using standard C code (and libraries) and not by extensive testing.
+
+Just noting; Same applies for other than the three big ones; This code is pure standard C and should therefore work just fine on FreeBSD, NetBSD, OpenBSD and many
+other operating systems as well.

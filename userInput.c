@@ -55,7 +55,7 @@ int userInput (char **buffer, char* prompt) {
     printf("%s", prompt);
     while ((thisChar = getchar()) != '\n' && thisChar != EOF) {
         if (len + 2 > size) {
-            size *= 2;
+            size += 2;
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
                 fprintf(stderr, LANG_ERRMSG_MEMORY);
