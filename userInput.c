@@ -35,6 +35,12 @@
 // to be freed by the caller.
 // This was intentionally done to avoid unnecessary memory management overhead for simple inputs and to simplify the usage of these functions in most cases.
 
+// ****** Variable declarations ******
+
+// Variables for information (e.g. when using the shared library)
+char* userInput_version         =       "v1.0.2-dev";
+char* userInput_features[6]     =       {"userInput", "userInput_c", "userInput_ml", "userInput_int", "userInput_double", "userInput_yesno"};
+
 // ****** Function declarations ******
 
 int userInput (char **buffer, char* prompt); // Memory-safe implementation of user input (single line)
