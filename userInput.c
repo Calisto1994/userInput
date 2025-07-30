@@ -110,48 +110,51 @@ int userInput_int (int *buffer, char* prompt) {
     // Variable declarations
     char *input;
     char *endptr;
+    errno = 0; // Reset errno before input
 
     // User Input
     if (userInput(&input, prompt) != 0) {
         printf("Fehler bei der Eingabe.\n");
-        free(input);
         return 1; // Error in input
     }
 
-    int value = strtol(input, &endptr, 10);
+    long value = strtol(input, &endptr, 10);
+    if (value < INT_MIN || value > INT_MAX) {
+        fprintf(stderr, "User-provided input out of range for int.\n");
+        free(input);
+        return 1; // Error in input
+    }
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
         fprintf(stderr, "User-provided input not a valid integer.\n");
         free(input);
         return 1; // Error in input
     }
-    errno=0; // Reset errno for the next input
 
     free(input);
-    *buffer = value;
+    *buffer = (int)value; // Convert long to int
     return 0; // Successful input
 }
 
 int userInput_double (double *buffer, char* prompt) {
-    // Varable declarations
+    // Variable declarations
     char *input;
     char *endptr;
+    errno = 0; // Reset errno before input
 
     // User Input
     if (userInput(&input, prompt) != 0) {
         printf("Fehler bei der Eingabe.\n");
-        free(input);
         return 1; // Error in input
     }
 
     double value = strtod(input, &endptr);
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
+        free(input); // Free memory on error
         fprintf(stderr, "User-provided input not a valid double.\n");
-        free(input);
         return 1; // Error in input
     }
-    errno=0; // Reset errno for the next input
 
     free(input);
     *buffer = value;
@@ -163,6 +166,10 @@ bool userInput_yesno (char* prompt) {
 
     while (true) {
         userInput_c(&zeichen, prompt);
+        if (zeichen == EOF) {
+            fprintf(stderr, "Input terminated by EOF before an answer could be processed.\n");
+            return false; // Treat EOF as no answer
+        }
         if (tolower(zeichen) == 'y') {
             printf("\n"); // New line for better readability
             return true; // Yes
