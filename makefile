@@ -8,7 +8,7 @@ clean:
 	@rm -rf ./*.so # remove the shared library since it was installed to /usr/lib64/userInput/
 
 install:	# Install the binary to /usr/lib64/userInput/
-	@echo "Installing Library..."
+	@echo "Installing library..."
 	@sudo mkdir -p /usr/lib64/userInput
 	@sudo cp ./libuserInput.so /usr/lib64/userInput/libuserInput.so
 	@sudo ldconfig # Update the dynamic linker run-time bindings
@@ -16,7 +16,7 @@ install:	# Install the binary to /usr/lib64/userInput/
 	@make clean # Clean up after installation
 
 uninstall:	# Uninstall the library from /usr/lib64/userInput/ (deletes the directory entirely)
-	@echo "Uninstalling rechenspiel..."
+	@echo "Uninstalling library..."
 	@sudo rm -rf /usr/lib64/userInput/
 
 linux: *.c
