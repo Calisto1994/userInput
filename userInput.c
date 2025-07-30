@@ -162,10 +162,8 @@ bool userInput_yesno (char* prompt) {
     char zeichen;
 
     while (true) {
-        userInput_c(&zeichen, prompt);
-        if (zeichen == EOF) {
-    
-            fprintf(stderr, "Input terminated by EOF before an answer could be processed.\n");
+        if (userInput_c(&zeichen, prompt) != 0) {
+            fprintf(stderr, "Error on input (yes/no).\n");
             return false; // Treat EOF as no answer
         }
         #ifdef APP_LANGUAGE
