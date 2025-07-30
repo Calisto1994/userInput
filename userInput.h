@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 int userInput (char **buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe
 int userInput_c (char *buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe (Einzelzeichen)

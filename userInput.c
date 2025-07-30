@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 // *** userInput.c - Memory-safe user input functions ***
 // This file contains functions for reading user input in a memory-safe way.

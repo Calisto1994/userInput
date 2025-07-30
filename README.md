@@ -94,3 +94,16 @@ in the following way:
           break;
     }
 ```
+
+## Use as shared library
+
+You can also build the userInput library as a shared object (and, if required, install to your system using the makefile) 
+
+### Build & Install
+
+```
+  make && make install
+
+```
+
+If you want to build just the shared object, you can just run `make` and the file `libuserInput.so` will be generated in the workdir directly.
