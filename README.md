@@ -61,7 +61,7 @@ in the following way:
     free(myChar);
 ```
 
-### Character Inputs (multiple lines) - requires STRG+D/EOF to continue
+### Character Inputs (multiple lines) - requires CTRL+D/EOF to continue
 
 ```
     char* myChar;
