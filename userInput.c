@@ -167,7 +167,11 @@ bool userInput_yesno (char* prompt) {
             fprintf(stderr, "Input terminated by EOF before an answer could be processed.\n");
             return false; // Treat EOF as no answer
         }
-        if (tolower(zeichen) == 'y' || tolower(zeichen) == 'j') {
+        #ifdef APP_LANGUAGE && APP_LANGUAGE == APP_LANGUAGE_GERMAN
+            if (tolower(zeichen) == 'j') {
+        #else
+            if (tolower(zeichen) == 'y') {
+        #endif
             printf("\n"); // New line for better readability
             return true; // Yes
         } else if (tolower(zeichen) == 'n' || tolower(zeichen) == 'n') {
