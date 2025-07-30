@@ -19,6 +19,7 @@ uninstall:	# Uninstall the library from /usr/lib/userInput/ (deletes the directo
 	@echo "Uninstalling library..."
 	@sudo rm -rf /usr/lib/libuserInput.so
 	@sudo rm -rf /usr/include/userInput.h
+	@sudo ldconfig # Update the dynamic linker run-time bindings
 
 linux: *.c
 	@mkdir -p ./bin/
