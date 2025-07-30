@@ -163,15 +163,14 @@ bool userInput_yesno (char *buffer, char* prompt) {
     while (true) {
         userInput_c(&zeichen, prompt);
         if (tolower(zeichen) == 'y') {
-            printf("\n"); // Neue Zeile für bessere Lesbarkeit
-            return true; // Ja
+            printf("\n"); // New line for better readability
+            return true; // Yes
         } else if (tolower(zeichen) == 'n') {
-            printf("\n"); // Neue Zeile für bessere Lesbarkeit    
-            return false; // Nein
+            printf("\n"); // New line for better readability    
+            return false; // No
         } else {
             printf("Invalid input! Only answer y/n please.\n");
-            continue; // Schleife neu starten
+            continue; // Restart loop
         }
-        free(&zeichen); // Freigeben des Puffers, da er nicht mehr benötigt wird
     }
 }
