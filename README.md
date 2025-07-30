@@ -110,3 +110,10 @@ If you want to build just the shared object, you can just run `make` and the fil
 To remove the library from your system, simply use `make uninstall` and the library and header file will be deleted.
 If you use just `make` to generate the shared object, you'll also find a `Windows Dynamic Link Library (DLL)` in the `./bin/` directory.
 Alternatively, you can use `make linux`, if you really just want the Linux file.
+
+### Build and Install on macOS
+
+Even though macOS isn't exactly Linux, use `make linux` if you've got gcc installed on macOS and want to build a .so file that'd be compatible with macOS/Darwin.
+You may have to change to .dylib (or even modify some aspects of the compiler commands) to make it work, depending on the versions of gcc and macOS you're using.
+Since I don't currently own a Mac myself (and certainly don't own different kinds of Mac computers, e.g. PowerPC, Intel and Apple Silicon), macOS compatibility
+is assured only through using standard C code (and libraries) and not by extensive testing.
