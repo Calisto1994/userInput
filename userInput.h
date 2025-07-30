@@ -6,5 +6,6 @@ int userInput_c (char *buffer, char* prompt); // Speichersichere Implementierung
 int userInput_ml (char **buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe (mehrere Zeilen)
 int userInput_int (int *buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe für Ganzzahlen
 int userInput_double (double *buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe für Gleitkommazahlen
+bool userInput_yesno (char *buffer, char* prompt); // Speichersichere Implementierung der Nutzereingabe für Ja/Nein-Antworten
 
 #endif
