@@ -107,3 +107,4 @@ You can also build the userInput library as a shared object (and, if required, i
 ```
 
 If you want to build just the shared object, you can just run `make` and the file `libuserInput.so` will be generated in the workdir directly.
+To remove the library from your system, simply use `make uninstall` and the library and header file will be deleted.

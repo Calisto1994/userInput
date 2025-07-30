@@ -10,7 +10,6 @@ clean:
 
 install:	# Install the binary to /usr/lib/userInput/
 	@echo "Installing library..."
-	@sudo mkdir -p /usr/lib64/userInput
 	@sudo cp ./libuserInput.so /usr/lib/libuserInput.so
 	@sudo cp ./userInput.h /usr/include/userInput.h
 	@sudo ldconfig # Update the dynamic linker run-time bindings
@@ -19,7 +18,8 @@ install:	# Install the binary to /usr/lib/userInput/
 
 uninstall:	# Uninstall the library from /usr/lib/userInput/ (deletes the directory entirely)
 	@echo "Uninstalling library..."
-	@sudo rm -rf /usr/lib/userInput/
+	@sudo rm -rf /usr/lib/libuserInput.so
+	@sudo rm -rf /usr/include/userInput.h
 
 linux: *.c
 	@echo "Building for Linux x86_64..."
