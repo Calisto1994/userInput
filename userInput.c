@@ -30,7 +30,7 @@
 
 #define APP_LANGUAGE_ENGLISH 0
 #define APP_LANGUAGE_GERMAN 1
-#define APP_LANGUAGE APP_LANGUAGE_ENGLISH // Define the language of the application, here German
+#define APP_LANGUAGE APP_LANGUAGE_ENGLISH // Define the language of the application, here English
 
 // ****** Function declarations ******
 
