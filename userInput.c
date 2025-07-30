@@ -28,6 +28,8 @@
 // to be freed by the caller.
 // This was intentionally done to avoid unnecessary memory management overhead for simple inputs and to simplify the usage of these functions in most cases.
 
+#define APP_LANGUAGE_ENGLISH 0
+#define APP_LANGUAGE_GERMAN 1
 
 // ****** Function declarations ******
 
@@ -161,17 +163,26 @@ bool userInput_yesno (char* prompt) {
     while (true) {
         userInput_c(&zeichen, prompt);
         if (zeichen == EOF) {
+    
             fprintf(stderr, "Input terminated by EOF before an answer could be processed.\n");
             return false; // Treat EOF as no answer
         }
-        if (tolower(zeichen) == 'y') {
+        if (tolower(zeichen) == 'y' || tolower(zeichen) == 'j') {
             printf("\n"); // New line for better readability
             return true; // Yes
-        } else if (tolower(zeichen) == 'n') {
+        } else if (tolower(zeichen) == 'n' || tolower(zeichen) == 'n') {
             printf("\n"); // New line for better readability    
             return false; // No
         } else {
-            printf("Invalid input! Only answer y/n please.\n");
+            #ifdef APP_LANGUAGE
+            if (APP_LANGUAGE == APP_LANGUAGE_GERMAN) {
+                printf("Ungültige Eingabe! Bitte nur mit j/n antworten.\n");
+            } else {
+                printf("Invalid input! Only answer y/n please.\n");
+            }
+            #else
+                printf("Invalid input! Only answer y/n please.\n");
+            #endif
             continue; // Restart loop
         }
     }
