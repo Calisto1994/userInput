@@ -1,4 +1,5 @@
 #include "includes.h"
+#include "language_EN.h" // English language. May be replaced, but NOT left out.
 
 // *** userInput.c - Memory-safe user input functions ***
 // This file contains functions for reading user input in a memory-safe way.
@@ -28,10 +29,6 @@
 // to be freed by the caller.
 // This was intentionally done to avoid unnecessary memory management overhead for simple inputs and to simplify the usage of these functions in most cases.
 
-#define APP_LANGUAGE_ENGLISH 0
-#define APP_LANGUAGE_GERMAN 1
-#define APP_LANGUAGE APP_LANGUAGE_ENGLISH // Define the language of the application, here English
-
 // ****** Function declarations ******
 
 int userInput (char **buffer, char* prompt); // Memory-safe implementation of user input (single line)
@@ -55,7 +52,7 @@ int userInput (char **buffer, char* prompt) {
             size *= 2;
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
-                fprintf(stderr, "Memory allocation failed\n");
+                fprintf(stderr, LANG_ERRMSG_MEMORY);
                 free(*buffer);
                 return 1;
             }
@@ -89,7 +86,7 @@ int userInput_ml (char **buffer, char* prompt) {
             size *= 2;
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
-                fprintf(stderr, "Memory allocation failed\n");
+                fprintf(stderr, LANG_ERRMSG_MEMORY);
                 free(*buffer);
                 return 1;
             }
@@ -111,19 +108,19 @@ int userInput_int (int *buffer, char* prompt) {
 
     // User Input
     if (userInput(&input, prompt) != 0) {
-        printf("Fehler bei der Eingabe.\n");
+        printf(LANG_ERRMSG_GENERAL);
         return 1; // Error in input
     }
 
     long value = strtol(input, &endptr, 10);
     if (value < INT_MIN || value > INT_MAX) {
-        fprintf(stderr, "User-provided input out of range for int.\n");
+        fprintf(stderr, LANG_ERRMSG_INT_RANGE);
         free(input);
         return 1; // Error in input
     }
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
-        fprintf(stderr, "User-provided input not a valid integer.\n");
+        fprintf(stderr, LANG_ERRMSG_INT);
         free(input);
         return 1; // Error in input
     }
@@ -141,7 +138,7 @@ int userInput_double (double *buffer, char* prompt) {
 
     // User Input
     if (userInput(&input, prompt) != 0) {
-        printf("Fehler bei der Eingabe.\n");
+        printf(LANG_ERRMSG_GENERAL);
         return 1; // Error in input
     }
 
@@ -149,7 +146,7 @@ int userInput_double (double *buffer, char* prompt) {
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
         free(input); // Free memory on error
-        fprintf(stderr, "User-provided input not a valid double.\n");
+        fprintf(stderr, LANG_ERRMSG_DOUBLE);
         return 1; // Error in input
     }
 
@@ -166,28 +163,14 @@ bool userInput_yesno (char* prompt) {
             fprintf(stderr, "Error on input (yes/no).\n");
             return false; // Treat EOF as no answer
         }
-        #ifdef APP_LANGUAGE
-            #if APP_LANGUAGE == APP_LANGUAGE_GERMAN
-                if (tolower(zeichen) == 'j') {
-            #else
-                if (tolower(zeichen) == 'y') {
-            #endif
-        #endif
+        if (tolower(zeichen) == LANG_YESCHAR) {
             printf("\n"); // New line for better readability
             return true; // Yes
-        } else if (tolower(zeichen) == 'n' || tolower(zeichen) == 'n') {
+        } else if (tolower(zeichen) == LANG_NOCHAR) {
             printf("\n"); // New line for better readability    
             return false; // No
         } else {
-            #ifdef APP_LANGUAGE
-                #if APP_LANGUAGE == APP_LANGUAGE_GERMAN
-                    printf("Ungültige Eingabe! Bitte nur mit j/n antworten.\n");
-                #else
-                    printf("Invalid input! Only answer y/n please.\n");
-                #endif
-            #else
-                printf("Invalid input! Only answer y/n please.\n");
-            #endif
+                    printf(LANG_ERRMSG_YN);
             continue; // Restart loop
         }
     }
