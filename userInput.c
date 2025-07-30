@@ -144,7 +144,7 @@ int userInput_double (double *buffer, char* prompt) {
         return 1; // Error in input
     }
 
-    int value = strtof(input, &endptr);
+    int value = strtod(input, &endptr);
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
         fprintf(stderr, "User-provided input not a valid double.\n");
