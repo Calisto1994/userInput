@@ -39,6 +39,9 @@ All functions are designed to be portable and do **not** rely on platform-specif
 - `int userInput_double(double *buffer, char* prompt);`  
   Reads a double from the user.
 
+  `bool userInput_yesno(char* prompt);`
+  Returns a boolean on yes/no (true/false) after a user was questioned
+
 ## Memory Management
 
 - Only the line input functions (`userInput`, `userInput_ml`) return a dynamically allocated buffer that **must be freed** by the caller.
@@ -77,4 +80,17 @@ in the following way:
     mySingleChar = userInput_c(&mySingleChar, "Yes or no [y/n]?");
     myInteger = userInput_int(&int, "How old are you?");
     myDouble = userInput_double(&myDouble, "How tall are you (in meters, two decimal places)?");
+```
+
+### Boolean input function - Yes/No questions
+
+```
+    switch (userInput_yesno("Do you want to continue?")) {
+      case true:
+          // CODE FOR YES HERE
+          break;
+      case false:
+          // CODE FOR NO HERE
+          break;
+    }
 ```

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <limits.h>
 #include <errno.h>
+#include <stdbool.h>
 
 // *** userInput.c - Memory-safe user input functions ***
 // This file contains functions for reading user input in a memory-safe way.
@@ -19,6 +20,7 @@
 // userInput_ml: Reads multiple lines of input from the user and stores them in a dynamically allocated buffer.
 // userInput_int: Reads an integer from the user and stores it in an int buffer.
 // userInput_double: Reads a double from the user and stores it in a double buffer.
+// userInput_yesno: Reads a yes/no answer from the user and returns a boolean value (true for yes, false for no).
 
 // !!!!! ATTENTION: These functions are designed to be memory-safe, meaning they handle dynamic memory allocation
 // (malloc/realloc) and error cases such as memory shortages or invalid inputs.
@@ -39,6 +41,7 @@ int userInput_c (char *buffer, char* prompt); // Memory-safe implementation of u
 int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of user input (multiple lines)
 int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles
+bool userInput_yesno (char *buffer, char* prompt); // Memory-safe implementation of user input for yes/no questions
 
 // ****** Character input functions ******
 
@@ -152,4 +155,23 @@ int userInput_double (double *buffer, char* prompt) {
     free(input);
     *buffer = value;
     return 0; // Successful input
+}
+
+bool userInput_yesno (char *buffer, char* prompt) {
+    char zeichen;
+
+    while (true) {
+        userInput_c(&zeichen, prompt);
+        if (tolower(zeichen) == 'y') {
+            printf("\n"); // Neue Zeile für bessere Lesbarkeit
+            return true; // Ja
+        } else if (tolower(zeichen) == 'n') {
+            printf("\n"); // Neue Zeile für bessere Lesbarkeit    
+            return false; // Nein
+        } else {
+            printf("Invalid input! Only answer y/n please.\n");
+            continue; // Schleife neu starten
+        }
+        free(&zeichen); // Freigeben des Puffers, da er nicht mehr benötigt wird
+    }
 }
