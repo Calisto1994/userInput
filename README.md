@@ -106,5 +106,7 @@ You can also build the userInput library as a shared object (and, if required, i
 
 ```
 
-If you want to build just the shared object, you can just run `make` and the file `libuserInput.so` will be generated in the workdir directly.
+If you want to build just the shared object, you can just run `make` and the file `libuserInput.so` will be generated in the `./bin/` directory.
 To remove the library from your system, simply use `make uninstall` and the library and header file will be deleted.
+If you use just `make` to generate the shared object, you'll also find a `Windows Dynamic Link Library (DLL)` in the `./bin/` directory.
+Alternatively, you can use `make linux`, if you really just want the Linux file.

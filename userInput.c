@@ -1,4 +1,10 @@
-#include "includes.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <errno.h>
+#include <stdbool.h>
+#include <ctype.h>
 #include "language_EN.h" // English language. May be replaced, but NOT left out.
 
 // *** userInput.c - Memory-safe user input functions ***
