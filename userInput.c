@@ -47,13 +47,13 @@ char* userInput_features[7]     =       {"userInput", "userInput_c", "userInput_
 
 // ****** Function declarations ******
 
-int userInput (char **buffer, char* prompt); // Memory-safe implementation of user input (single line)
-int userInput_c (char *buffer, char* prompt); // Memory-safe implementation of user input (single character)
-int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of user input (multiple lines)
-int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers
-int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles
-bool userInput_yesno (char* prompt); // Memory-safe implementation of user input for yes/no questions
-int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information
+int userInput (char **buffer, char* prompt); // Memory-safe implementation of user input (single line)          Returns dynamic buffer (must be freed)
+int userInput_c (char *buffer, char* prompt); // Memory-safe implementation of user input (single character)    Returns static buffer (no need to be freed)
+int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of user input (multiple lines)    Returns dynamic buffer (must be freed)
+int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers         Returns static buffer (no need to be freed)
+int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles    Returns static buffer (no need to be freed)
+bool userInput_yesno (char* prompt); // Memory-safe implementation of user input for yes/no questions           Returns a boolean value directly, no freeing;
+int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information          Returns two pointers to some static buffers
 
 // ****** Character input functions ******
 

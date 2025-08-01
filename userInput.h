@@ -15,5 +15,6 @@ int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of
 int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles
 bool userInput_yesno (char* prompt); // Memory-safe implementation of user input for yes/no questions
+int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information
 
 #endif
