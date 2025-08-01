@@ -38,8 +38,12 @@
 // ****** Variable declarations ******
 
 // Variables for information (e.g. when using the shared library)
-char* userInput_version         =       "v1.0.2-dev";
-char* userInput_features[6]     =       {"userInput", "userInput_c", "userInput_ml", "userInput_int", "userInput_double", "userInput_yesno"};
+char* userInput_release         =       "v1.0.2-dev";
+char* userInput_features[7]     =       {"userInput", "userInput_c", "userInput_ml", "userInput_int", "userInput_double", "userInput_yesno", "userInput_version"};
+    // the array allows for checking whether a specific feature is available in this version of the library once compiled, since these
+    // are globally available variables. For this, you'll use the userInput_version() function.
+    // This function is required since the global variables of a shared object (.so (Linux) or .dll (Win32)) aren't otherwise accessible
+    // to the caller.
 
 // ****** Function declarations ******
 
@@ -49,6 +53,7 @@ int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of
 int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles
 bool userInput_yesno (char* prompt); // Memory-safe implementation of user input for yes/no questions
+int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information
 
 // ****** Character input functions ******
 
@@ -186,4 +191,10 @@ bool userInput_yesno (char* prompt) {
             continue; // Restart loop
         }
     }
+}
+
+int userInfo_version(char **versionInfo, char ***featureList) {
+    *versionInfo = userInput_release;
+    *featureList = userInput_features;
+    return 0; // Function can't fail, so we'll always return 0 to signal everything's okay.
 }
