@@ -3,9 +3,9 @@
 #include <string.h>
 #include <limits.h>
 #include <errno.h>
-#include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
+#include <stdbool.h>
 #include "userInput_errors.h"      // Includes it's own header in order to know about the error message codes
 
 // *** userInput.c - Memory-safe user input functions ***
@@ -23,7 +23,7 @@
 // userInput_ml: Reads multiple lines of input from the user and stores them in a dynamically allocated buffer.
 // userInput_int: Reads an integer from the user and stores it in an int buffer.
 // userInput_double: Reads a double from the user and stores it in a double buffer.
-// userInput_yesno: Reads a yes/no answer from the user and returns a boolean value (true for yes, false for no).
+// userInput_yesno: Reads a yes/no answer from the user and returns a boolean value (-1 for yes, -2 for no).
 
 // !!!!! ATTENTION: These functions are designed to be memory-safe, meaning they handle dynamic memory allocation
 // (malloc/realloc) and error cases such as memory shortages or invalid inputs.
@@ -53,7 +53,7 @@ int userInput_c (char *buffer, char* prompt); // Memory-safe implementation of u
 int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of user input (multiple lines)    Returns dynamic buffer (must be freed)
 int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers         Returns static buffer (no need to be freed)
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles    Returns static buffer (no need to be freed)
-bool userInput_yesno (char* prompt, char yesChar, char noChar); // Memory-safe implementation of user input for yes/no questions           Returns a boolean value directly, no freeing;
+int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar); // Memory-safe implementation of user input for yes/no questions           Returns a boolean value directly, no freeing;
 int userInput_date (time_t *date, char* prompt); // Memory-safe implementation of user input for dates         Returns a statc buffer (no need to be freed);
 int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information          Returns two pointers to some static buffers
 
@@ -180,21 +180,18 @@ int userInput_double (double *buffer, char* prompt) {
     return 0; // Successful input
 }
 
-bool userInput_yesno (char* prompt, char yesChar, char noChar) { // to allow for different languages without a language file required
+int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) { // to allow for different languages without a language file required
     char zeichen;
 
-    if (userInput_c(&zeichen, prompt) != 0) {
-        fprintf(stderr, "Error on input (yes/no).\n");
-        return false; // Treat EOF as no answer
-    }
     if (tolower(zeichen) == yesChar) {
         printf("\n"); // New line for better readability
-        return true; // Yes
+        buffer = true;
+        return UINPUT_SUCCESS; // Yes
     } else if (tolower(zeichen) == noChar) {
         printf("\n"); // New line for better readability    
-        return false; // No
+        return UINPUT_SUCCESS; // No
     } else {
-        return NULL;
+        return UINPUT_ERRMSG_GENERAL;
     }
 }
 
