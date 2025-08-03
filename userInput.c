@@ -85,7 +85,7 @@ int userInput (char **buffer, char* prompt) {
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
                 free(*buffer);
-                return UINPUT_ERssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCw5OzWNsUi4IPWanhPW5ASPMU87SizQBchPvmQ7RkRIzN9WUCqE5Mbx4ZKXsqLddNTNxb/oDnFRhjvE36KZ8ofYB7tnoQZw8dLkiINPrWkRiEqcRBmpLQeeX9t4DmQ5Jjorop8pOspEhzAf0+Pe6mVoFBwZYAaouYJVzhA7hojxvFWvg+vziOlzPG323ICPVn+mPCNhC5M5wjg5+NKz+sAGdx69luDViBkXBwZDyIo0nhw8mmL8B0HahoFXYqycUYKNwsYuQ6jEYymOf9mKtXE+nADRPd7eWFGEt0uA9GE2SfkCHqtw9Mxj+vmLqyYliuHYWsNmaZHq+fiyRZLuiPm0entBUuQKk/HRe5R9C1X7J0cRIjuqNBvkFE80Kkbris7iopu53zpeAdH7WKZAYtl0CFjKkueTpKLCFCvrtmDsAOq9u/WJV3R1WwUmVmREeV+/VPhBJfwOA6OiWt7J3cuyfL8BDST+vKijGeaia2oJ2aBsV9EtmLv/+06r8dzjnM= calisto@TERRARMSG_MEMORY;
+                return UINPUT_ERRMSG_GENERAL;
             }
             *buffer = tmp;
         }
