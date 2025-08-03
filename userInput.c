@@ -117,9 +117,8 @@ int userInput_ml (char **buffer, char* prompt) {
             size *= 2;
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
-                fprintf(stderr, UINPUT_ERRMSG_MEMORY);
                 free(*buffer);
-                return 1;
+                return UINPUT_ERRMSG_MEMORY;
             }
             *buffer = tmp;
         }
@@ -139,21 +138,18 @@ int userInput_int (int *buffer, char* prompt) {
 
     // User Input
     if (userInput(&input, prompt) != 0) {
-        printf(UINPUT_ERRMSG_GENERAL);
-        return 1; // Error in input
+        return UINPUT_ERRMSG_GENERAL; // Error in input
     }
 
     long value = strtol(input, &endptr, 10);
     if (value < INT_MIN || value > INT_MAX) {
-        fprintf(stderr, UINPUT_ERRMSG_GENERAL);
         free(input);
-        return 1; // Error in input
+        return UINPUT_ERRMSG_GENERAL; // Error in input
     }
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
-        fprintf(stderr, UINPUT_ERRMSG_INT);
         free(input);
-        return 1; // Error in input
+        return UINPUT_ERRMSG_MEMORY; // Error in input
     }
 
     free(input);
@@ -169,16 +165,14 @@ int userInput_double (double *buffer, char* prompt) {
 
     // User Input
     if (userInput(&input, prompt) != 0) {
-        printf(UINPUT_ERRMSG_GENERAL);
-        return 1; // Error in input
+        return UINPUT_ERRMSG_GENERAL; // Error in input
     }
 
     double value = strtod(input, &endptr);
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
         free(input); // Free memory on error
-        fprintf(stderr, UINPUT_ERRMSG_DOUBLE);
-        return 1; // Error in input
+        return UINPUT_ERRMSG_DOUBLE; // Error in input
     }
 
     free(input);
@@ -189,21 +183,18 @@ int userInput_double (double *buffer, char* prompt) {
 bool userInput_yesno (char* prompt, char yesChar, char noChar) { // to allow for different languages without a language file required
     char zeichen;
 
-    while (true) {
-        if (userInput_c(&zeichen, prompt) != 0) {
-            fprintf(stderr, "Error on input (yes/no).\n");
-            return false; // Treat EOF as no answer
-        }
-        if (tolower(zeichen) == yesChar) {
-            printf("\n"); // New line for better readability
-            return true; // Yes
-        } else if (tolower(zeichen) == noChar) {
-            printf("\n"); // New line for better readability    
-            return false; // No
-        } else {
-                    printf(UINPUT_ERRMSG_YN);
-            continue; // Restart loop
-        }
+    if (userInput_c(&zeichen, prompt) != 0) {
+        fprintf(stderr, "Error on input (yes/no).\n");
+        return false; // Treat EOF as no answer
+    }
+    if (tolower(zeichen) == yesChar) {
+        printf("\n"); // New line for better readability
+        return true; // Yes
+    } else if (tolower(zeichen) == noChar) {
+        printf("\n"); // New line for better readability    
+        return false; // No
+    } else {
+        return NULL;
     }
 }
 

@@ -39,8 +39,30 @@ All functions are designed to be portable and do **not** rely on platform-specif
 - `int userInput_double(double *buffer, char* prompt);`  
   Reads a double from the user.
 
-  `bool userInput_yesno(char* prompt);`
+  `bool userInput_yesno(char* prompt, char yesChar, char noChar);`
   Returns a boolean on yes/no (true/false) after a user was questioned
+  `yesChar` represents what the user is supposed to enter for "yes" (true)
+  `noChar`  represents what the user is supposed to enter for "no"  (false)
+
+  ### 2 Examples:
+
+  #### English
+
+  ```C
+    int main () {
+        bool test;
+        test = userInput_yesno("Do you want to continue?", 'y', 'n'); // y means yes, n means no
+    }
+  ```
+
+  #### German
+
+  ```C
+    int main () {
+      bool test;
+      test = userInput_yesno("Willst du fortfahren?", 'j', 'n'); // j means "ja" (yes in German), n means "nein" (no in German)
+    } 
+  ```
 
 ## Memory Management
 
@@ -54,7 +76,7 @@ in the following way:
 
 ### Character Inputs (single line)
 
-```
+```C
     char* myChar;
     myChar = userInput(&myChar, "Tell me your name: ");
     // YOUR CODE HERE
@@ -63,7 +85,7 @@ in the following way:
 
 ### Character Inputs (multiple lines) - requires CTRL+D/EOF to continue
 
-```
+```C
     char* myChar;
     myChar = userInput(&myChar, "Tell me your name: ");
     // YOUR CODE HERE
@@ -72,7 +94,7 @@ in the following way:
 
 ### All the other Input functions
 
-```
+```C
     char mySingleChar;
     int myInteger;
     double myDouble;
@@ -84,7 +106,7 @@ in the following way:
 
 ### Boolean input function - Yes/No questions
 
-```
+```C
     switch (userInput_yesno("Do you want to continue?")) {
       case true:
           // CODE FOR YES HERE
