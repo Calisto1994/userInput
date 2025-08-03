@@ -5,7 +5,8 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "language_EN.h" // English language. May be replaced, but NOT left out.
+#include <time.h>
+#include "userInput_errors.h"      // Includes it's own header in order to know about the error message codes
 
 // *** userInput.c - Memory-safe user input functions ***
 // This file contains functions for reading user input in a memory-safe way.
@@ -38,7 +39,7 @@
 // ****** Variable declarations ******
 
 // Variables for information (e.g. when using the shared library)
-char* userInput_release         =       "v1.0.2-dev";
+char* userInput_release         =       "v2.0-dev";
 char* userInput_features[7]     =       {"userInput", "userInput_c", "userInput_ml", "userInput_int", "userInput_double", "userInput_yesno", "userInput_version"};
     // the array allows for checking whether a specific feature is available in this version of the library once compiled, since these
     // are globally available variables. For this, you'll use the userInput_version() function.
@@ -52,8 +53,22 @@ int userInput_c (char *buffer, char* prompt); // Memory-safe implementation of u
 int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of user input (multiple lines)    Returns dynamic buffer (must be freed)
 int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers         Returns static buffer (no need to be freed)
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles    Returns static buffer (no need to be freed)
-bool userInput_yesno (char* prompt); // Memory-safe implementation of user input for yes/no questions           Returns a boolean value directly, no freeing;
+bool userInput_yesno (char* prompt, char yesChar, char noChar); // Memory-safe implementation of user input for yes/no questions           Returns a boolean value directly, no freeing;
+int userInput_date (time_t *date, char* prompt); // Memory-safe implementation of user input for dates         Returns a statc buffer (no need to be freed);
 int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information          Returns two pointers to some static buffers
+
+struct DateTime {   // custom data type for mixed date/time inputs (and for calculations with them)
+    int day;
+    int month;
+    int year;
+    int hour;
+    int minute;
+    int second;
+};
+// These custom data types will be used to create time_t elements, representing the seconds since January 1st, 1970 - just like
+// most programming languages handle this kind of data these days. But, as always: We want to be memory-safe here, ofc;
+// Also, why we use time_t: it's standard C, and we want to keep all this C17-compliant.
+// *** ------------------------------ ***
 
 // ****** Character input functions ******
 
@@ -69,9 +84,8 @@ int userInput (char **buffer, char* prompt) {
             size += 2;
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
-                fprintf(stderr, LANG_ERRMSG_MEMORY);
                 free(*buffer);
-                return 1;
+                return UINPUT_ERssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCw5OzWNsUi4IPWanhPW5ASPMU87SizQBchPvmQ7RkRIzN9WUCqE5Mbx4ZKXsqLddNTNxb/oDnFRhjvE36KZ8ofYB7tnoQZw8dLkiINPrWkRiEqcRBmpLQeeX9t4DmQ5Jjorop8pOspEhzAf0+Pe6mVoFBwZYAaouYJVzhA7hojxvFWvg+vziOlzPG323ICPVn+mPCNhC5M5wjg5+NKz+sAGdx69luDViBkXBwZDyIo0nhw8mmL8B0HahoFXYqycUYKNwsYuQ6jEYymOf9mKtXE+nADRPd7eWFGEt0uA9GE2SfkCHqtw9Mxj+vmLqyYliuHYWsNmaZHq+fiyRZLuiPm0entBUuQKk/HRe5R9C1X7J0cRIjuqNBvkFE80Kkbris7iopu53zpeAdH7WKZAYtl0CFjKkueTpKLCFCvrtmDsAOq9u/WJV3R1WwUmVmREeV+/VPhBJfwOA6OiWt7J3cuyfL8BDST+vKijGeaia2oJ2aBsV9EtmLv/+06r8dzjnM= calisto@TERRARMSG_MEMORY;
             }
             *buffer = tmp;
         }
@@ -103,7 +117,7 @@ int userInput_ml (char **buffer, char* prompt) {
             size *= 2;
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
-                fprintf(stderr, LANG_ERRMSG_MEMORY);
+                fprintf(stderr, UINPUT_ERRMSG_MEMORY);
                 free(*buffer);
                 return 1;
             }
@@ -125,19 +139,19 @@ int userInput_int (int *buffer, char* prompt) {
 
     // User Input
     if (userInput(&input, prompt) != 0) {
-        printf(LANG_ERRMSG_GENERAL);
+        printf(UINPUT_ERRMSG_GENERAL);
         return 1; // Error in input
     }
 
     long value = strtol(input, &endptr, 10);
     if (value < INT_MIN || value > INT_MAX) {
-        fprintf(stderr, LANG_ERRMSG_INT_RANGE);
+        fprintf(stderr, UINPUT_ERRMSG_GENERAL);
         free(input);
         return 1; // Error in input
     }
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
-        fprintf(stderr, LANG_ERRMSG_INT);
+        fprintf(stderr, UINPUT_ERRMSG_INT);
         free(input);
         return 1; // Error in input
     }
@@ -155,7 +169,7 @@ int userInput_double (double *buffer, char* prompt) {
 
     // User Input
     if (userInput(&input, prompt) != 0) {
-        printf(LANG_ERRMSG_GENERAL);
+        printf(UINPUT_ERRMSG_GENERAL);
         return 1; // Error in input
     }
 
@@ -163,7 +177,7 @@ int userInput_double (double *buffer, char* prompt) {
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
         free(input); // Free memory on error
-        fprintf(stderr, LANG_ERRMSG_DOUBLE);
+        fprintf(stderr, UINPUT_ERRMSG_DOUBLE);
         return 1; // Error in input
     }
 
@@ -172,7 +186,7 @@ int userInput_double (double *buffer, char* prompt) {
     return 0; // Successful input
 }
 
-bool userInput_yesno (char* prompt) {
+bool userInput_yesno (char* prompt, char yesChar, char noChar) { // to allow for different languages without a language file required
     char zeichen;
 
     while (true) {
@@ -180,17 +194,23 @@ bool userInput_yesno (char* prompt) {
             fprintf(stderr, "Error on input (yes/no).\n");
             return false; // Treat EOF as no answer
         }
-        if (tolower(zeichen) == LANG_YESCHAR) {
+        if (tolower(zeichen) == yesChar) {
             printf("\n"); // New line for better readability
             return true; // Yes
-        } else if (tolower(zeichen) == LANG_NOCHAR) {
+        } else if (tolower(zeichen) == noChar) {
             printf("\n"); // New line for better readability    
             return false; // No
         } else {
-                    printf(LANG_ERRMSG_YN);
+                    printf(UINPUT_ERRMSG_YN);
             continue; // Restart loop
         }
     }
+}
+
+int userInput_date (time_t *date, char* prompt) {
+    char* input;
+    userInput(&input, prompt);
+    // TODO: Well... what about some conversion of the user input to a date?!
 }
 
 int userInfo_version(char **versionInfo, char ***featureList) {

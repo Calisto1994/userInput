@@ -12,7 +12,6 @@ install:	# Install the binary to /usr/lib/userInput/
 	@sudo cp ./bin/libuserInput.so /usr/lib/libuserInput.so
 	@sudo cp ./userInput.h /usr/include/userInput.h
 	@sudo ldconfig # Update the dynamic linker run-time bindings
-	@sudo chmod +x /usr/local/bin/rechenspiel
 	@make clean # Clean up after installation
 
 uninstall:	# Uninstall the library from /usr/lib/userInput/ (deletes the directory entirely)
