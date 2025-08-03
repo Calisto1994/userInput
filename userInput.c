@@ -184,12 +184,11 @@ int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) {
     char zeichen;
 
     if (tolower(zeichen) == yesChar) {
-        printf("\n"); // New line for better readability
-        buffer = true;
-        return UINPUT_SUCCESS; // Yes
+        buffer = true; // Yes
+        return UINPUT_SUCCESS;
     } else if (tolower(zeichen) == noChar) {
-        printf("\n"); // New line for better readability    
-        return UINPUT_SUCCESS; // No
+        buffer = false; // No
+        return UINPUT_SUCCESS;
     } else {
         return UINPUT_ERRMSG_GENERAL;
     }
