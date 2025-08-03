@@ -39,8 +39,8 @@ All functions are designed to be portable and do **not** rely on platform-specif
 - `int userInput_double(double *buffer, char* prompt);`  
   Reads a double from the user.
 
-  `bool userInput_yesno(char* prompt, char yesChar, char noChar);`
-  Returns a boolean on yes/no (true/false) after a user was questioned
+  `int userInput_yesno(bool *buffer, char* prompt, char yesChar, char noChar);`
+  Writes a boolean (true/false) into the buffer, representing yes or no answers
   `yesChar` represents what the user is supposed to enter for "yes" (true)
   `noChar`  represents what the user is supposed to enter for "no"  (false)
 
