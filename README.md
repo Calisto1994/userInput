@@ -107,12 +107,15 @@ in the following way:
 ### Boolean input function - Yes/No questions
 
 ```C
-    switch (userInput_yesno("Do you want to continue?")) {
+    switch (userInput_yesno("Do you want to continue?", 'y', 'n')) {
       case true:
           // CODE FOR YES HERE
           break;
       case false:
           // CODE FOR NO HERE
+          break;
+      default:
+          // If neither true nor false is returned (NULL value), there might be other problems with the user's request
           break;
     }
 ```
