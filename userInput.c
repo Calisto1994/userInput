@@ -184,10 +184,10 @@ int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) {
     char zeichen;
 
     if (tolower(zeichen) == yesChar) {
-        buffer = true; // Yes
+        *buffer = true; // Yes
         return UINPUT_SUCCESS;
     } else if (tolower(zeichen) == noChar) {
-        buffer = false; // No
+        *buffer = false; // No
         return UINPUT_SUCCESS;
     } else {
         return UINPUT_ERRMSG_GENERAL;
