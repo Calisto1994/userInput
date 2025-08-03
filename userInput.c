@@ -180,7 +180,7 @@ int userInput_double (double *buffer, char* prompt) {
     return 0; // Successful input
 }
 
-int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) { // to allow for different languages without a language file required
+int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) {
     char zeichen;
 
     if (tolower(zeichen) == yesChar) {
@@ -193,6 +193,12 @@ int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) { //
     } else {
         return UINPUT_ERRMSG_GENERAL;
     }
+
+
+    /* Version information: v2.0-* */
+    /* userInput_yesno() now does _not_ directly return the value using return(); - it will only return error messages this way.
+       Like all other userInput functions, it'll write the return value of the requested information into a buffer, so a pointer
+       has to be provided. This is a static buffer return, so it doesn't require free(); */
 }
 
 int userInput_date (time_t *date, char* prompt) {

@@ -51,7 +51,7 @@ All functions are designed to be portable and do **not** rely on platform-specif
   ```C
     int main () {
         bool test;
-        test = userInput_yesno("Do you want to continue?", 'y', 'n'); // y means yes, n means no
+        userInput_yesno(&test, "Do you want to continue?", 'y', 'n'); // y means yes, n means no
     }
   ```
 
@@ -60,7 +60,7 @@ All functions are designed to be portable and do **not** rely on platform-specif
   ```C
     int main () {
       bool test;
-      test = userInput_yesno("Willst du fortfahren?", 'j', 'n'); // j means "ja" (yes in German), n means "nein" (no in German)
+      userInput_yesno(&test, "Willst du fortfahren?", 'j', 'n'); // j means "ja" (yes in German), n means "nein" (no in German)
     } 
   ```
 
@@ -107,17 +107,19 @@ in the following way:
 ### Boolean input function - Yes/No questions
 
 ```C
-    switch (userInput_yesno("Do you want to continue?", 'y', 'n')) {
+  bool yesNo;
+  if (userInput_yesno(&yesNo, "Do you want to continue?", 'y', 'n') != 0) {
+    // ERROR HANDLING
+  } else {
+    switch yesNo {
       case true:
-          // CODE FOR YES HERE
-          break;
+        // CODE FOR YES
+        break;
       case false:
-          // CODE FOR NO HERE
-          break;
-      default:
-          // If neither true nor false is returned (NULL value), there might be other problems with the user's request
-          break;
+        // CODE FOR NO
+        break;
     }
+  }
 ```
 
 ## Use as shared library
