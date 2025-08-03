@@ -183,6 +183,10 @@ int userInput_double (double *buffer, char* prompt) {
 int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) {
     char zeichen;
 
+    if (userInput_c(&zeichen, prompt) != 0) {
+        return UINPUT_ERRMSG_GENERAL;
+    }
+    
     if (tolower(zeichen) == yesChar) {
         *buffer = true; // Yes
         return UINPUT_SUCCESS;
@@ -206,7 +210,7 @@ int userInput_date (time_t *date, char* prompt) {
     // TODO: Well... what about some conversion of the user input to a date?!
 }
 
-int userInfo_version(char **versionInfo, char ***featureList) {
+int userInput_version(char **versionInfo, char ***featureList) {
     *versionInfo = userInput_release;
     *featureList = userInput_features;
     return 0; // Function can't fail, so we'll always return 0 to signal everything's okay.
