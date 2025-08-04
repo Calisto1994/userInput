@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include "userInput_errors.h"      // Includes it's own header in order to know about the error message codes
 
-// *** userInput.c - Memory-safe user input functions ***
+// *** userInput.c - Memory-safe user input functions - libuserInput ***
 // This file contains functions for reading user input in a memory-safe way.
 // It includes functions for reading single characters, lines, integers, and doubles.
 // It is meant to be compliant with the C17 standard and therefore can be used on
@@ -39,7 +39,7 @@
 // ****** Variable declarations ******
 
 // Variables for information (e.g. when using the shared library)
-char* userInput_release         =       "v2.0-dev";
+char* userInput_release         =       "v2.0-dev1";
 char* userInput_features[7]     =       {"userInput", "userInput_c", "userInput_ml", "userInput_int", "userInput_double", "userInput_yesno", "userInput_version"};
     // the array allows for checking whether a specific feature is available in this version of the library once compiled, since these
     // are globally available variables. For this, you'll use the userInput_version() function.
@@ -53,11 +53,13 @@ int userInput_c (char *buffer, char* prompt); // Memory-safe implementation of u
 int userInput_ml (char **buffer, char* prompt); // Memory-safe implementation of user input (multiple lines)    Returns dynamic buffer (must be freed)
 int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of user input for integers         Returns static buffer (no need to be freed)
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles    Returns static buffer (no need to be freed)
-int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar); // Memory-safe implementation of user input for yes/no questions           Returns a boolean value directly, no freeing;
-int userInput_date (time_t *date, char* prompt); // Memory-safe implementation of user input for dates         Returns a statc buffer (no need to be freed);
+int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar); // Memory-safe implementation of user input for yes/no questions
+                                                                                                            //  Returns static buffer (no need to be freed)
+int userInput_date (time_t *myDate, char* prompt); // Memory-safe implementation of user input for dates          Returns a static buffer (no need to be freed)
+int userInput_time (time_t *myTime, char* prompt); // Memory-safe implementation of user input for time           Returns a static buffer (no need to be freed)
 int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information          Returns two pointers to some static buffers
 
-struct DateTime {   // custom data type for mixed date/time inputs (and for calculations with them)
+struct DateTime {   // custom data type for mixed date/time inputs (and for (possible) calculations with them)
     int day;
     int month;
     int year;
@@ -92,7 +94,7 @@ int userInput (char **buffer, char* prompt) {
         (*buffer)[len++] = thisChar;
         (*buffer)[len] = '\0'; // Null-terminate the string
     }
-    return 0;
+    return UINPUT_SUCCESS;
 }
 
 int userInput_c (char *buffer, char* prompt) {
@@ -102,7 +104,7 @@ int userInput_c (char *buffer, char* prompt) {
     }
     *buffer = thisChar[0]; // Only the first character is needed
     free(thisChar); // Free the buffer as it is no longer needed
-    return 0;
+    return UINPUT_SUCCESS;
 }
 
 int userInput_ml (char **buffer, char* prompt) {
@@ -154,7 +156,7 @@ int userInput_int (int *buffer, char* prompt) {
 
     free(input);
     *buffer = (int)value; // Convert long to int
-    return 0; // Successful input
+    return UINPUT_SUCCESS; // Successful input
 }
 
 int userInput_double (double *buffer, char* prompt) {
@@ -177,7 +179,7 @@ int userInput_double (double *buffer, char* prompt) {
 
     free(input);
     *buffer = value;
-    return 0; // Successful input
+    return UINPUT_SUCCESS; // Successful input
 }
 
 int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) {
@@ -204,14 +206,32 @@ int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar) {
        has to be provided. This is a static buffer return, so it doesn't require free(); */
 }
 
-int userInput_date (time_t *date, char* prompt) {
+// ****** Other numeric input functions (date, time, ...) ******
+
+int userInput_date (time_t *myDate, char* prompt) {
+    // FORMATS:
+    //  MM/DD[/YYYY] - American format
+    //  DD.MM[.YYYY] - European format
+    //
+    // Not providing YYYY will make the function assume that the date references to the current year
+
     char* input;
     userInput(&input, prompt);
     // TODO: Well... what about some conversion of the user input to a date?!
 }
 
-int userInput_version(char **versionInfo, char ***featureList) {
+int userInput_time (time_t *myTime, char* prompt) {
+    // FORMATS:
+    //  hours:minutes
+    //  hours:minutes:seconds
+
+    char* input;
+    userInput(&input, prompt);
+    // TODO: time input (will generate a ctime based on 0 (to allow further use with calculations))
+}
+
+int userInput_version(char **versionInfo, char ***featureList) { // query userInput version information
     *versionInfo = userInput_release;
     *featureList = userInput_features;
-    return 0; // Function can't fail, so we'll always return 0 to signal everything's okay.
+    return UINPUT_SUCCESS; // Function can't fail
 }
