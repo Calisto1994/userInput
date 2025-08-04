@@ -17,13 +17,6 @@
 // It'll work on Windows, Linux and macOS, as test cases have shown.
 
 // ****** User input functions ******
-// List of features:
-// userInput: Reads a line of input from the user and stores it in a dynamically allocated buffer.
-// userInput_c: Reads a single character from the user and stores it in a char buffer.
-// userInput_ml: Reads multiple lines of input from the user and stores them in a dynamically allocated buffer.
-// userInput_int: Reads an integer from the user and stores it in an int buffer.
-// userInput_double: Reads a double from the user and stores it in a double buffer.
-// userInput_yesno: Reads a yes/no answer from the user and returns a boolean value (-1 for yes, -2 for no).
 
 // !!!!! ATTENTION: These functions are designed to be memory-safe, meaning they handle dynamic memory allocation
 // (malloc/realloc) and error cases such as memory shortages or invalid inputs.
@@ -55,6 +48,7 @@ int userInput_int (int *buffer, char* prompt); // Memory-safe implementation of 
 int userInput_double (double *buffer, char* prompt); // Memory-safe implementation of user input for doubles    Returns static buffer (no need to be freed)
 int userInput_yesno (bool *buffer, char* prompt, char yesChar, char noChar); // Memory-safe implementation of user input for yes/no questions
                                                                                                             //  Returns static buffer (no need to be freed)
+// New features: v2.0-dev ++
 int userInput_date (time_t *myDate, char* prompt); // Memory-safe implementation of user input for dates          Returns a static buffer (no need to be freed)
 int userInput_time (time_t *myTime, char* prompt); // Memory-safe implementation of user input for time           Returns a static buffer (no need to be freed)
 int userInfo_version (char **versionInfo, char ***featureList); // query userInput version information          Returns two pointers to some static buffers
@@ -228,6 +222,19 @@ int userInput_time (time_t *myTime, char* prompt) {
     char* input;
     userInput(&input, prompt);
     // TODO: time input (will generate a ctime based on 0 (to allow further use with calculations))
+}
+
+int userInput_timespan (time_t *myTime, char* prompt) {
+    // FORMATS:
+    //  Y = Year, M = Month, d = Day, h = hour, m = minute, s = second
+    // example: 1Y5M3d = 1 year, 5 months, 3 days
+    // Will generate a value in seconds based on the user's input
+    // e.g. "2m" (2 minutes) will return a time_t of 120 (120 seconds)
+    char* input;
+    if (userInput(&input, prompt) != 0) {
+        return UINPUT_ERRMSG_GENERAL;
+    }
+
 }
 
 int userInput_version(char **versionInfo, char ***featureList) { // query userInput version information
