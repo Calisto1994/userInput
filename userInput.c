@@ -140,12 +140,12 @@ int userInput_int (int *buffer, char* prompt) {
     long value = strtol(input, &endptr, 10);
     if (value < INT_MIN || value > INT_MAX) {
         free(input);
-        return UINPUT_ERRMSG_GENERAL; // Error in input
+        return UINPUT_ERRMSG_INT_RANGE; // Error in input
     }
 
     if (errno == ERANGE || (endptr == input) || (*endptr != '\0')) {
         free(input);
-        return UINPUT_ERRMSG_MEMORY; // Error in input
+        return UINPUT_ERRMSG_INT; // Error in input
     }
 
     free(input);
