@@ -70,14 +70,14 @@ struct DateTime {   // custom data type for mixed date/time inputs (and for (pos
 
 int userInput (char **buffer, char* prompt) {
     char thisChar;
-    *buffer = malloc(1);
+    *buffer = malloc(2);
     size_t size = 1;
     size_t len = 0;
 
     printf("%s", prompt);
     while ((thisChar = getchar()) != '\n' && thisChar != EOF) {
-        if (len + 2 > size) {
-            size += 2;
+        if (len + 1 > size) {
+            size *= 2;
             char* tmp = realloc(*buffer, size);
             if (!tmp) {
                 free(*buffer);
