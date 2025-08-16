@@ -7,6 +7,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include "userInput_errors.h"      // Includes it's own header in order to know about the error message codes
+#include "extstring.h"             // userInput v2.0+ extra string manipulation features
 
 // *** userInput.c - Memory-safe user input functions - libuserInput ***
 // This file contains functions for reading user input in a memory-safe way.
@@ -33,7 +34,7 @@
 
 // Variables for information (e.g. when using the shared library)
 char* userInput_release         =       "v2.0-dev1";
-char* userInput_features[7]     =       {"userInput", "userInput_c", "userInput_ml", "userInput_int", "userInput_double", "userInput_yesno", "userInput_version"};
+char *userInput_features[]     =       {"userInput", "userInput_c", "userInput_ml", "userInput_int", "userInput_double", "userInput_yesno", "userInput_version"};
     // the array allows for checking whether a specific feature is available in this version of the library once compiled, since these
     // are globally available variables. For this, you'll use the userInput_version() function.
     // This function is required since the global variables of a shared object (.so (Linux) or .dll (Win32)) aren't otherwise accessible
@@ -94,7 +95,7 @@ int userInput (char **buffer, char* prompt) {
 int userInput_c (char *buffer, char* prompt) {
     char* thisChar;
     if (userInput(&thisChar, prompt) != 0) {
-        return 1;
+        return UINPUT_ERRMSG_GENERAL;
     }
     *buffer = thisChar[0]; // Only the first character is needed
     free(thisChar); // Free the buffer as it is no longer needed
